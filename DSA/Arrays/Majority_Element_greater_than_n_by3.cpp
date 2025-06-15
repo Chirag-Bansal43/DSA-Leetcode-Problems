@@ -36,7 +36,8 @@ vector<int> Majority_greater_than_Nby3_02(vector<int>& nums){
         count[nums[i]]++;
         if(count[nums[i]] == n/3){
             ans.push_back(nums[i]);
-        }  
+            if(ans.size()==2)   break;
+        }
     }
     return ans;
 }

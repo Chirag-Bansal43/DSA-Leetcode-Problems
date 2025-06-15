@@ -1,0 +1,77 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+/*
+Important here is to see that there can be at most 2 elements that are majority element greater than n/3 in any array
+ans = {_,_} (ans can have at most 2 elements)
+*/
+
+// Brute Force Solution , T.C = O(n^2) , S.C = O(1)
+vector<int> Majority_greater_than_Nby3_01(vector<int>& ques){
+    int n = ques.size();
+    vector<int> ans;
+    for(int i=0;i<n;i++){
+        if(ans.size() == 0 || ques[i]!=ans[0]){
+            int count = 0;
+            for(int j=0;j<n;j++){
+                if(ques[j] == ques[i]){
+                    count++;
+                }
+            }
+            if(count>n/3){
+                ans.push_back(ques[i]);
+                if(ans.size()==2)   break;
+            }
+        }
+    }
+    return ans;
+}
+
+// T.C = O(n) , S.C = O(n) (Using Hash Maps)
+vector<int> Majority_greater_than_Nby3_02(vector<int>& nums){
+    int n = nums.size();
+    map<int,int> count;
+    vector<int> ans;
+    for(int i=0;i<n;i++){
+        count[nums[i]]++;
+        if(count[nums[i]] == n/3){
+            ans.push_back(nums[i]);
+        }  
+    }
+    return ans;
+}
+
+
+void printAns(vector<int>& ans){
+    int n = ans.size();
+    cout<<endl;
+    if(n==0)
+        cout<<"[]";
+    else if(n==1)
+        cout<<"["<<ans[0]<<"]";
+    else
+        cout<<"["<<ans[0]<<","<<ans[1]<<"]";
+    cout<<endl;
+}
+
+int main(){
+    vector<int> ques;
+    int N;
+    cout<<"Enter size of question vector : ";
+    cin>>N;
+    // Taking input for question vector
+    cout<<"Enter elements ->"<<endl;
+    for(int i=0;i<N;i++){
+        int ele;
+        cin>>ele;
+        ques.push_back(ele);
+    }
+
+    //Solution Starts
+    vector<int> ans = Majority_greater_than_Nby3_01(ques);
+
+    //Print ans vector
+    printAns(ans);
+
+    return 0;
+}

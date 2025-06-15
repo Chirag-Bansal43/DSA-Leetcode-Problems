@@ -30,11 +30,12 @@ vector<int> Majority_greater_than_Nby3_01(vector<int>& ques){
 // T.C = O(n) , S.C = O(n) (Using Hash Maps)
 vector<int> Majority_greater_than_Nby3_02(vector<int>& nums){
     int n = nums.size();
-    map<int,int> count;
+    int min = n/3 + 1;
+    unordered_map<int,int> count;
     vector<int> ans;
     for(int i=0;i<n;i++){
         count[nums[i]]++;
-        if(count[nums[i]] == n/3){
+        if(count[nums[i]] == min){
             ans.push_back(nums[i]);
             if(ans.size()==2)   break;
         }
@@ -69,7 +70,7 @@ int main(){
     }
 
     //Solution Starts
-    vector<int> ans = Majority_greater_than_Nby3_01(ques);
+    vector<int> ans = Majority_greater_than_Nby3_02(ques);
 
     //Print ans vector
     printAns(ans);

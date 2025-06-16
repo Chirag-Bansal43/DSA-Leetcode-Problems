@@ -10,7 +10,8 @@ ans = {_,_} (ans can have at most 2 elements)
 // T.C = O(2n) , S.C = O(1)
 vector<int> Majority_greater_than_Nby3(vector<int>& ques){
     int cnt1 = 0 , cnt2 = 0;
-    int el1,el2;
+    int el1 = INT_MIN;
+    int el2 = INT_MIN;
     for(int i=0;i<ques.size();i++){
         if(cnt1 == 0 && el2 != ques[i]){
             cnt1 = 1;

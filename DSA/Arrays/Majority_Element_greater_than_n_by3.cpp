@@ -6,6 +6,41 @@ Important here is to see that there can be at most 2 elements that are majority 
 ans = {_,_} (ans can have at most 2 elements)
 */
 
+// Moore's Voting Algorithm (Optimal)
+// T.C = O(2n) , S.C = O(1)
+vector<int> Majority_greater_than_Nby3(vector<int>& ques){
+    int cnt1 = 0 , cnt2 = 0;
+    int el1,el2;
+    for(int i=0;i<ques.size();i++){
+        if(cnt1 == 0 && el2 != ques[i]){
+            cnt1 = 1;
+            el1 = ques[i];
+        }
+        else if(cnt2 == 0 && el1 != ques[i]){
+            cnt2 = 1;
+            el2 = ques[i];
+        }
+        else if(ques[i] == el1)    cnt1++;
+        else if(ques[i] == el2)    cnt2++;
+        else{
+            cnt1--; cnt2--;
+        }
+    }
+
+    // Checking if el1 & el2 are majority element or not
+    cnt1 = 0; cnt2 = 0;
+    for(int i=0;i<ques.size();i++){
+        if(ques[i] == el1)  cnt1++;
+        if(ques[i] == el2)  cnt2++;
+    }
+    vector<int> ans;
+    if(cnt1 > ques.size()/3)    ans.push_back(el1);
+    if(cnt2 > ques.size()/3)    ans.push_back(el2);
+
+    return ans;
+}
+
+
 // Brute Force Solution , T.C = O(n^2) , S.C = O(1)
 vector<int> Majority_greater_than_Nby3_01(vector<int>& ques){
     int n = ques.size();
@@ -70,7 +105,7 @@ int main(){
     }
 
     //Solution Starts
-    vector<int> ans = Majority_greater_than_Nby3_02(ques);
+    vector<int> ans = Majority_greater_than_Nby3(ques);
 
     //Print ans vector
     printAns(ans);

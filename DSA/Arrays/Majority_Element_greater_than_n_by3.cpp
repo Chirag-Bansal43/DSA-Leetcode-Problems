@@ -63,7 +63,8 @@ vector<int> Majority_greater_than_Nby3_01(vector<int>& ques){
     return ans;
 }
 
-// T.C = O(n) , S.C = O(n) (Using Hash Maps)
+// Better Solution - (Using Hash Maps)
+// T.C = O(n) , S.C = O(n) 
 vector<int> Majority_greater_than_Nby3_02(vector<int>& nums){
     int n = nums.size();
     int min = n/3 + 1;

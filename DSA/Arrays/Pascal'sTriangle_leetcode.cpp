@@ -34,7 +34,7 @@ C(r-1,column index) :(3,0) (3,1)    (3,2)          (3,3)
 Both are optimal approaches done in O(n^2) time & O(1) space
 */
 
-// 1st variation : getting rth row and nth column element of Pascal's Triangle
+// 1st variation : getting rth row and nth column element of Pascal's Triangle (here r and n are row and column number not indexes)
 // T.C = O(k), where k = column number of element to find
 int getelement(vector<vector<int>> &v,int row,int column){
     // find C(row-1,column-1) -> nikalne ke liye '1 to column-1' tak loop chalana padega
@@ -59,8 +59,8 @@ void FirstTwoRowsPush(vector<vector<int>> &v){
     v.push_back(row);
 }
 
-/* // T.C = O(n^2) 
-void PascalTriangle(vector<vector<int>> &v,int& n){
+// T.C = O(n^2) , S.C = O(n)
+void PascalTriangle_01(vector<vector<int>> &v,int& n){
     if(n==1)    FirstRowPush(v);
     else if(n==2)   FirstTwoRowsPush(v);
     else{
@@ -80,8 +80,8 @@ void PascalTriangle(vector<vector<int>> &v,int& n){
             row = {};
         }
     }
-} Method:1 ends
-*/
+} //Method:1 ends
+
 
 // Method 2 : Using (2nd variation to generate rows and print all rows till nth row)
 //Combinatorics Approach

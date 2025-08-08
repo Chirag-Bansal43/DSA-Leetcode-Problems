@@ -143,6 +143,130 @@ void print(Node*& head){
     cout<<endl;
 }
 
+// Detect Circularity and Cycle in LL
+
+// Bekar
+bool isCircular_001(Node*& head){
+    if(head == nullptr) return 1;
+    // >=1 nodes in LL
+    Node* temp = head->next;
+    while(temp != nullptr && temp != head){
+        temp=temp->next;
+    }
+
+    if(temp == head)    return 1;
+    return 0;
+}
+
+// Good but high T.C
+bool isCircular_002(Node*& head){
+    if(head == nullptr) return 1;
+
+    unordered_map<Node*,bool> visited;
+    Node* temp = head;
+    //cout<<"temp node is visited or not : " <<visited[temp]<<endl; -> Bydefault value of any node address in map is false or 0
+    while(temp!= nullptr){
+        if(visited[temp] == true){ // node is visited
+            if(temp == head)    return 1;
+            return 0;
+        }
+        // If the node is not visited then By default it's value stored in map is 0(or false)
+        visited[temp] = true;
+        temp=temp->next;
+    }
+    return 0;
+}
+
+// Detecting cycle in Linked List
+
+// Finding Cycle in LL : Using Fast and Slow pointer
+// T.C = O(n) , S.C = O(1)
+bool isCyclic(Node*& head){
+    if(head == nullptr) return 0;
+
+    Node* slow = head;
+    Node* fast = head;
+    while(fast!=nullptr && slow!=nullptr){
+        fast=fast->next;
+        if(fast!=nullptr)
+            fast=fast->next;
+        else return 0;
+
+        slow=slow->next;
+        
+        if(slow == fast){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+//Get Starting Element of Loop : Using Fast and Slow pointer
+// T.C = O(n) , S.C = O(1)
+Node *getStartingNodeOfLoop(Node *head) {
+    if(head == nullptr) return nullptr;
+    
+    Node* slow = head;
+    Node* fast = head;
+    while(fast!=nullptr){
+        fast=fast->next;
+        if(fast!=nullptr)   fast=fast->next;
+        else return nullptr;
+        slow=slow->next;
+        if(slow==fast){
+            slow=head;
+            while(slow!=fast){
+                slow=slow->next;
+                fast=fast->next;
+            }
+            return slow;
+        }
+    }
+    return nullptr;
+}
+
+// Optimal : T.C = O(n) , S.C = O(1)
+bool isCircular(Node* head){
+    if(head == nullptr) return 1;
+
+    Node* slow = head;
+    Node* fast = head;
+    while(fast!=nullptr && slow!=nullptr){
+        fast=fast->next;
+        if(fast!=nullptr)
+            fast=fast->next;
+        else return 0;
+
+        slow=slow->next;
+        
+        if(slow == fast){
+            slow = head;
+            while(slow != fast){
+                fast=fast->next;
+                slow=slow->next;
+            }
+
+            if(slow == head)    return 1; // LL is Circular
+            return 0; // else have cycle but not circular
+        }
+    }
+    return 0;
+}
+
+void deletingCycle(Node* head){
+    Node* startNodeLoop = getStartingNodeOfLoop(head);
+    
+    // No loop
+    if(startNodeLoop == nullptr)    return;
+    
+    Node* temp = startNodeLoop;
+    while(temp->next != startNodeLoop){
+        temp=temp->next;
+    }
+    temp->next=nullptr;
+    cout<<"Cycle has been successfully deleted from Linked List..."<<endl;
+}
+
 int main(){
 
     Node* head = nullptr;
@@ -170,15 +294,41 @@ int main(){
 
     cout<<"head "<<head->data<<"  "<<"tail "<<tail->data<<endl<<endl;
 
-    deletionByPosition(head,tail,1);
-    print(head);
-    cout<<"head "<<head->data<<"  "<<"tail "<<tail->data<<endl<<endl;
+    // deletionByPosition(head,tail,1);
+    // print(head);
+    // cout<<"head "<<head->data<<"  "<<"tail "<<tail->data<<endl<<endl;
 
-    deletionByValue(head,tail,3);
+    // deletionByValue(head,tail,3);
+    // print(head);
+    // cout<<"head "<<head->data<<"  "<<"tail "<<tail->data<<endl<<endl;
+    //--------------------------------------------------------------------------------------
+    
+    // Adding cycle to LL
+    tail->next = head->next; // LL becomes like this [3 5 7 10 13 5]
+
+    //Checking LL is circular or not
+    if(isCircular(head))
+        cout<<"LL is circular"<<endl;
+    else    cout<<"LL is not circular"<<endl;
+
+    //Checking there is a cycle in LL or not
+    if(isCyclic(head))
+        cout<<"LL is cyclic"<<endl;
+    else    cout<<"LL is not cyclic"<<endl;
+
+    // Printing starting node data of loop in LL 
+    cout<<"Starting Node of Loop in LL having value : "<<getStartingNodeOfLoop(head)->data<<endl<<endl;
+
+    // Deleting Cycle in LL
+    deletingCycle(head);
     print(head);
-    cout<<"head "<<head->data<<"  "<<"tail "<<tail->data<<endl<<endl;
+    cout<<"head "<<head->data<<" tail "<<tail->data<<endl;
+
+    //Checking there is a cycle in LL or not
+    if(isCyclic(head))
+        cout<<"LL is cyclic"<<endl;
+    else    cout<<"LL is not cyclic"<<endl;
 
     delete head;
-
     return 0;
 }

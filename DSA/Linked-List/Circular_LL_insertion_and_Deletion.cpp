@@ -133,6 +133,148 @@ void destructor(Node*& tail){
     delete tail;
 }
 
+// Detecting Loop in Linked List
+
+// Method-1(Not Good because not work for cyclic LL inputs) : Using simple traversing using while loop
+// This method does not work when input linked list have cycle in it
+// T.C = O(n) , S.C = O(1)
+bool isCircular_001(Node*& head){
+    if(head == nullptr) return 1;
+    // >=1 nodes in LL
+    Node* temp = head->next;
+    while(temp != nullptr && temp != head){
+        temp=temp->next;
+    }
+
+    if(temp == head)    return 1;
+    return 0;
+}
+
+// Method-2(work for all inputs but have high time complexity) : Using hash map<Node*,bool> or hash set<Node*>
+// This method also works when input LL having cycle but not circular...
+// T.C = O(n) in avg case in case of unordered_map | But T.C = O(n^2) in case of collisions in unordered_map in worst case
+// S.C = O(n) of map data structure
+// Written by me not perfect but i am happy :) ........................
+bool isCircular_02(Node*& head){
+    if(head == nullptr) return 1;
+    unordered_map<Node*,bool> mpp;
+    Node* temp = head;
+    while(temp != nullptr){
+        if(mpp.find(temp) == mpp.end()){
+            mpp[temp] = true;
+            temp=temp->next;
+        }
+        // two cases came in else 
+        // 1. LL have cycle but not circular
+        // 2. LL have cycle and circular LL
+        else{ 
+            if(mpp.find(temp)->first == head){
+                // LL is circular
+                return 1;
+            }
+            // LL having cycle but not circular
+            return 0;
+        }
+    }
+    // temp == null => LL is not circular
+    return 0;
+}
+
+// Another nicer way of writing the same code 
+bool isCircular_002(Node*& head){
+    if(head == nullptr) return 1;
+
+    unordered_map<Node*,bool> visited;
+    Node* temp = head;
+    //cout<<"temp node is visited or not : " <<visited[temp]<<endl; -> Bydefault value of any node address in map is false or 0
+    while(temp!= nullptr){
+        if(visited[temp] == true){ // node is visited
+            if(temp == head)    return 1;
+            return 0;
+        }
+        // If the node is not visited then By default it's value stored in map is 0(or false)
+        visited[temp] = true;
+        temp=temp->next;
+    }
+    return 0;
+}
+
+// Detecting cycle in LL
+
+//Method : Optimal Approach
+//Using Fast and Slow Pointer (Floyd's cycle detection algorithm)
+// T.C = O(n) , S.C = O(1)
+bool isCyclic(Node*& head){
+    if(head == nullptr) return 0;
+
+    Node* slow = head;
+    Node* fast = head;
+    while(fast!=nullptr && slow!=nullptr){
+        fast=fast->next;
+        if(fast!=nullptr)
+            fast=fast->next;
+        else return 0;
+
+        slow=slow->next;
+        
+        if(slow == fast){
+            return 1;
+        }
+    }
+    return 0;
+}
+
+//Get Starting Element of Loop : Using Fast and Slow pointer
+// T.C = O(n) , S.C = O(1)
+Node *getStartingNodeOfLoop(Node *head) {
+    if(head == nullptr) return nullptr;
+    Node* slow = head;
+    Node* fast = head;
+    while(fast!=nullptr){
+        fast=fast->next;
+        if(fast!=nullptr)   fast=fast->next;
+        else return nullptr;
+        slow=slow->next;
+        if(slow==fast){
+            slow=head;
+            while(slow!=fast){
+                slow=slow->next;
+                fast=fast->next;
+            }
+            return slow;
+        }
+    }
+    return nullptr;
+}
+
+// Optimal : T.C = O(n) , S.C = O(1)
+bool isCircular_003(Node* head){
+    if(head == nullptr) return 1;
+
+    Node* slow = head;
+    Node* fast = head;
+    while(fast!=nullptr && slow!=nullptr){
+        fast=fast->next;
+        if(fast!=nullptr)
+            fast=fast->next;
+        else return 0;
+
+        slow=slow->next;
+        
+        if(slow == fast){
+            slow = head;
+            while(slow != fast){
+                fast=fast->next;
+                slow=slow->next;
+            }
+
+            if(slow == head)    return 1; // LL is Circular
+            return 0; // else have cycle but not circular
+        }
+    }
+    return 0;
+}
+
 
 int main(){
     
@@ -161,6 +303,10 @@ int main(){
     print(tail);
     cout<<"tail "<<tail->data<<endl<<endl;
 
+    //Checking LL is circular or not
+    if(isCyclic(tail))
+        cout<<"LL is cyclic"<<endl<<endl;
+    else    cout<<"LL is not cyclic"<<endl<<endl;
 
     destructor(tail);
 

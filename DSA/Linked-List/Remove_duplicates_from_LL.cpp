@@ -75,7 +75,7 @@ Node* deleteDuplicates_Sorted(Node* head) {
 //Remove Duplicates from Unsorted Linked List
 
 // Brute Force => T.C = O(n^2) , S.C = O(1)
-Node* deleteDuplicates(Node* head) {
+Node* deleteDuplicates_001(Node* head) {
     Node* present = head;
     while(present != nullptr){
         Node* prev = present;
@@ -97,7 +97,39 @@ Node* deleteDuplicates(Node* head) {
     return head;
 }
 
+// Better Solution => Using hash map or hash set 
+// It is better because it usses extra space in the form of map data Structure
+// T.C = O(n) , S.C = O(n)
+Node *deleteDuplicates_002(Node *head)
+{
+    unordered_map<int,bool> visited;
+    Node* prev = nullptr;
+    Node* curr = head;
+    while(curr != nullptr){
+        if(visited[curr->data] == true){
+            prev->next = curr->next;
+            curr->next = nullptr;
+            delete curr;
+            curr = prev->next;
+        }
+        else{
+            visited[curr->data] = true;
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+    return head;
+}
 
+/*
+It's Optimal way involves these steps
+1. First sort the Linked List by merge sort algorithm in O(n* logn) time
+2. then Remove the duplicates from linked list using above "Remove Duplicates from sorted Linked List" algorithm in O(n) time
+This is How you can remove duplicates from Unsorted Linked List in 
+T.C = O(n*log(n) + n) and S.C = O(1)
+
+If takes little bit more time than the above hashMap approach but it takes O(1) space complexity which makes this approach optimal for software companies...
+*/
 
 int main(){
     Node* head = nullptr;
@@ -128,9 +160,10 @@ int main(){
     print(head);
     cout<<"head "<<head->data<<"  "<<"tail "<<tail->data<<endl<<endl;
 
-    deleteDuplicates(head);
+    deleteDuplicates_002(head);
     print(head);
 
+    
 
     return 0;
 }

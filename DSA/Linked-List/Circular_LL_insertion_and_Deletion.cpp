@@ -199,82 +199,25 @@ bool isCircular_002(Node*& head){
     return 0;
 }
 
-// Detecting cycle in LL
-
-//Method : Optimal Approach
-//Using Fast and Slow Pointer (Floyd's cycle detection algorithm)
-// T.C = O(n) , S.C = O(1)
-bool isCyclic(Node*& head){
-    if(head == nullptr) return 0;
-
-    Node* slow = head;
-    Node* fast = head;
-    while(fast!=nullptr && slow!=nullptr){
-        fast=fast->next;
-        if(fast!=nullptr)
-            fast=fast->next;
-        else return 0;
-
-        slow=slow->next;
-        
-        if(slow == fast){
-            return 1;
-        }
-    }
-    return 0;
-}
-
-//Get Starting Element of Loop : Using Fast and Slow pointer
-// T.C = O(n) , S.C = O(1)
-Node *getStartingNodeOfLoop(Node *head) {
-    if(head == nullptr) return nullptr;
-    Node* slow = head;
-    Node* fast = head;
-    while(fast!=nullptr){
-        fast=fast->next;
-        if(fast!=nullptr)   fast=fast->next;
-        else return nullptr;
-        slow=slow->next;
-        if(slow==fast){
-            slow=head;
-            while(slow!=fast){
-                slow=slow->next;
-                fast=fast->next;
-            }
-            return slow;
-        }
-    }
-    return nullptr;
-}
-
-// Optimal : T.C = O(n) , S.C = O(1)
+// Optimal : T.C = O(n) , S.C = O(1) using Tortoise and Hare Method
 bool isCircular_003(Node* head){
-    if(head == nullptr) return 1;
-
     Node* slow = head;
     Node* fast = head;
-    while(fast!=nullptr && slow!=nullptr){
-        fast=fast->next;
-        if(fast!=nullptr)
-            fast=fast->next;
-        else return 0;
-
+    while(fast!=nullptr && fast->next!=nullptr){
         slow=slow->next;
-        
-        if(slow == fast){
+        fast=fast->next->next;
+        if(slow == fast){   // Great Observation : In circular LL Meeting point is always head node so we can say that if the meeting point is head node then LL is circular and if meeting point is not a head node then LL have cycle but is not circular
             slow = head;
             while(slow != fast){
                 fast=fast->next;
                 slow=slow->next;
             }
-
             if(slow == head)    return 1; // LL is Circular
             return 0; // else have cycle but not circular
         }
     }
     return 0;
 }
-
 
 int main(){
     
@@ -304,7 +247,7 @@ int main(){
     cout<<"tail "<<tail->data<<endl<<endl;
 
     //Checking LL is circular or not
-    if(isCyclic(tail))
+    if(isCircular_003(tail))
         cout<<"LL is cyclic"<<endl<<endl;
     else    cout<<"LL is not cyclic"<<endl<<endl;
 

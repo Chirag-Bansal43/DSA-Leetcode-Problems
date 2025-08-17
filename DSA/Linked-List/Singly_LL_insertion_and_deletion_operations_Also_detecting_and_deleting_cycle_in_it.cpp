@@ -180,21 +180,14 @@ bool isCircular_002(Node*& head){
 // Detecting cycle in Linked List
 
 // Finding Cycle in LL : Using Fast and Slow pointer
-// T.C = O(n) , S.C = O(1)
+// T.C = O(n) in worst case , S.C = O(1)
 bool isCyclic(Node*& head){
-    if(head == nullptr) return 0;
-
     Node* slow = head;
     Node* fast = head;
-    while(fast!=nullptr && slow!=nullptr){
-        fast=fast->next;
-        if(fast!=nullptr)
-            fast=fast->next;
-        else return 0;
-
+    while(fast!=nullptr && fast->next!=nullptr){
         slow=slow->next;
-        
-        if(slow == fast){
+        fast=fast->next->next;
+        if(slow==fast){
             return 1;
         }
     }
@@ -204,15 +197,11 @@ bool isCyclic(Node*& head){
 //Get Starting Element of Loop : Using Fast and Slow pointer
 // T.C = O(n) , S.C = O(1)
 Node *getStartingNodeOfLoop(Node *head) {
-    if(head == nullptr) return nullptr;
-    
     Node* slow = head;
     Node* fast = head;
-    while(fast!=nullptr){
-        fast=fast->next;
-        if(fast!=nullptr)   fast=fast->next;
-        else return nullptr;
+    while(fast!=nullptr && fast->next!=nullptr){
         slow=slow->next;
+        fast=fast->next->next;
         if(slow==fast){
             slow=head;
             while(slow!=fast){
@@ -227,25 +216,17 @@ Node *getStartingNodeOfLoop(Node *head) {
 
 // Optimal : T.C = O(n) , S.C = O(1)
 bool isCircular(Node* head){
-    if(head == nullptr) return 1;
-
     Node* slow = head;
     Node* fast = head;
-    while(fast!=nullptr && slow!=nullptr){
-        fast=fast->next;
-        if(fast!=nullptr)
-            fast=fast->next;
-        else return 0;
-
+    while(fast!=nullptr && fast->next!=nullptr){
         slow=slow->next;
-        
+        fast=fast->next->next;
         if(slow == fast){
             slow = head;
             while(slow != fast){
                 fast=fast->next;
                 slow=slow->next;
             }
-
             if(slow == head)    return 1; // LL is Circular
             return 0; // else have cycle but not circular
         }
@@ -253,18 +234,41 @@ bool isCircular(Node* head){
     return 0;
 }
 
-void deletingCycle(Node* head){
-    Node* startNodeLoop = getStartingNodeOfLoop(head);
-    
-    // No loop
-    if(startNodeLoop == nullptr)    return;
-    
-    Node* temp = startNodeLoop;
-    while(temp->next != startNodeLoop){
-        temp=temp->next;
+// Deleting Loop from LL
+// T.C=O(n) , S.C=O(1)
+Node* deletingCycle(Node* head){
+    Node* slow = head;
+    Node* fast = head;
+    while(fast!=nullptr && fast->next!=nullptr){
+        slow=slow->next;
+        fast=fast->next->next;
+        if(slow==fast){
+            slow=head;
+            while(slow->next!=fast->next){
+                slow=slow->next;
+                fast=fast->next;
+            }
+            fast->next=nullptr;
+        }
     }
-    temp->next=nullptr;
-    cout<<"Cycle has been successfully deleted from Linked List..."<<endl;
+    cout<<"Loop is successfully deleted..."<<endl;
+    return head;
+}
+
+// Finding Length of Loop in LL Same as Deleting Loop from LL
+int LenOfLoop(Node* head){
+    Node* slow = head;
+    Node* fast = head;
+    int cnt=1;
+    while(fast!=nullptr && fast->next!=nullptr){
+        slow=slow->next;
+        fast=fast->next->next;
+        cnt++;
+        if(slow==fast){
+            return cnt-1;
+        }
+    }
+    return -1;
 }
 
 int main(){
@@ -302,9 +306,10 @@ int main(){
     // print(head);
     // cout<<"head "<<head->data<<"  "<<"tail "<<tail->data<<endl<<endl;
     //--------------------------------------------------------------------------------------
-    
+    //Till now LL is [3->5->7->10->13->null]
+
     // Adding cycle to LL
-    tail->next = head->next; // LL becomes like this [3 5 7 10 13 5]
+    tail->next = head->next->next; // LL becomes like this [3->5->7->10->13->7 cyclic]
 
     //Checking LL is circular or not
     if(isCircular(head))
@@ -317,17 +322,20 @@ int main(){
     else    cout<<"LL is not cyclic"<<endl;
 
     // Printing starting node data of loop in LL 
-    cout<<"Starting Node of Loop in LL having value : "<<getStartingNodeOfLoop(head)->data<<endl<<endl;
+    cout<<"Starting Node of Loop in LL having value : "<< getStartingNodeOfLoop(head)->data<<endl;
+    
+    // Length of Loop
+    cout<<"Length of Loop in LL : "<<LenOfLoop(head)<<endl<<endl;
 
     // Deleting Cycle in LL
     deletingCycle(head);
     print(head);
     cout<<"head "<<head->data<<" tail "<<tail->data<<endl;
-
-    //Checking there is a cycle in LL or not
+    //Now Check Is there any cycle in LL
     if(isCyclic(head))
         cout<<"LL is cyclic"<<endl;
     else    cout<<"LL is not cyclic"<<endl;
+
 
     delete head;
     return 0;

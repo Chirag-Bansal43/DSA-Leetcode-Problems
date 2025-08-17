@@ -163,7 +163,5 @@ int main(){
     deleteDuplicates_002(head);
     print(head);
 
-    
-
     return 0;
 }

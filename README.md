@@ -1,3 +1,3 @@
-This Repository made for Revision Purpose
+This Repository contains DSA problems which I solved on different platforms like leetcode , geeksforgeeks and Coding Kninjas.
 
-It contains DSA questions which I solved on leetcode
+It is made for Revision Questions which I already solved.

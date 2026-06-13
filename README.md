@@ -1,4 +1,4 @@
-** Data Structures & Algorithms Portfolio
+# Data Structures & Algorithms Portfolio
 --
 A comprehensive collection of optimized DSA solutions solved across various platforms (LeetCode, GeeksforGeeks, Coding Ninjas).
 

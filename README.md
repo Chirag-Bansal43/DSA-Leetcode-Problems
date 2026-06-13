@@ -1,3 +1,3 @@
-This Repository contains DSA problems which I solved on different platforms like leetcode , geeksforgeeks and Coding Kninjas.
+This Repository contains problems which I solved while learning Data Structures and Algorithms.
 
-It is made for Revision Questions which I already solved.
+It is made for Revising Questions which I coundn't able to solve in my first Attempt.

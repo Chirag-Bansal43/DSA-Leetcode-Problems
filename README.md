@@ -1,3 +1,5 @@
-This Repository contains problems which I solved while learning Data Structures and Algorithms.
+** Data Structures & Algorithms Portfolio
+--
+A comprehensive collection of optimized DSA solutions solved across various platforms (LeetCode, GeeksforGeeks, Coding Ninjas).
 
-It is made for Revising Questions which I coundn't able to solve in my first Attempt.
+The repository is structured by topic (Graphs, Dynamic Programming, Trees, etc.) to maintain clean code organization and demonstrate a strong foundation in low-level computational logic, time-complexity optimization, and memory management.
